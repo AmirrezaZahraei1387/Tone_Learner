@@ -47,7 +47,7 @@ n_x, normal_audio = read("welcome.mp3")
 learning_audio = learning_audio[len(learning_audio)-len(normal_audio):]
 learning_audio = convert_1d(learning_audio)
 
-
+print(type(np.polyfit(normal_audio, learning_audio, 3)))
 mymodel = np.poly1d(np.polyfit(normal_audio, learning_audio, 3))
 newaudio = []
 
