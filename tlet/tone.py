@@ -11,7 +11,7 @@ def normalize_path_exten(file_name: str):
     """adding the tone extension to the file if it does not have one."""
     name, exten = os.path.splitext(file_name)
     if exten != File_Extension:
-        os.path.join(file_name, File_Extension)
+        file_name += File_Extension
     return file_name
 
 
@@ -27,7 +27,6 @@ class ToneOPoly:
         return self.__polyfit
 
     def save(self, file_name: str):
-
         file_name = normalize_path_exten(file_name)
 
         with open(file_name, mode='wb') as file:
@@ -42,7 +41,3 @@ class ToneOPoly:
 
         with open(file_name, mode='rb') as file:
             self.__polyfit = np_fromfile(file, dtype=self.__polyfit.dtype)
-
-
-
-
