@@ -1,9 +1,11 @@
-from numpy import poly1d, polyfit, np_empty, ndenumerate
+from numpy import poly1d, polyfit, ndenumerate
+from numpy import empty as np_empty
+from numpy import array
 import tlet.oi as io
 import tlet.tone as tone
 
 
-def normalize_size(original_f_o, base_f_o):
+def normalize_size(base_f_o, original_f_o):
     """if the size of the two audios are not equal
     this functon  will cut off the part to make them equal."""
 
@@ -12,8 +14,21 @@ def normalize_size(original_f_o, base_f_o):
     else:
         base_f_o = base_f_o[len(base_f_o) - len(original_f_o):]
 
+    return base_f_o, original_f_o
 
-def tletprocess(original_file: str, base_file: str):
+
+def PutIn1D(__array__: array):
+
+    length = len(__array__)
+    vector = np_empty(length)
+
+    for index in range(length):
+        vector[index] = __array__[index][0]
+
+    return vector
+
+
+def tletprocess(base_file: str, original_file: str):
     """getting the file names of audios and then start use
      the polynomial regression on them to predict the tone
      of the person
@@ -25,8 +40,13 @@ def tletprocess(original_file: str, base_file: str):
 
     lx, original_f_o = io.read_audio(original_file)
     ly, base_f_o = io.read_audio(base_file)
+    base_f_o, original_f_o = normalize_size(base_f_o, original_f_o)
 
-    normalize_size(original_f_o, base_f_o)
+    if len(original_f_o.shape) != 1:
+        original_f_o = PutIn1D(original_f_o)
+    if len(base_f_o.shape) != 1:
+        base_f_o = PutIn1D(base_f_o)
+
     return tone.ToneOPoly(polyfit(base_f_o, original_f_o, 3))
 
 
@@ -44,4 +64,6 @@ def tpredict_audio(from_file: str, to_file: str, tone_obj: tone.ToneOPoly, frame
 
     io.write_audio(to_file, fr, new_audio)
 
+
+a = tletprocess("learn.wav", "base.wav")
 
