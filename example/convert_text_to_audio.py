@@ -7,7 +7,7 @@ from gtts import gTTS
 import os
 
 # The text that you want to convert to audio
-mytext = 'Welcome to the home!'
+mytext = 'Hello!'
 
 # Language in which you want to convert
 language = 'en'
@@ -20,7 +20,5 @@ myobj = gTTS(text=mytext, lang=language, slow=False)
 
 # Saving the converted audio in a mp3 file named
 # welcome
-myobj.save("welcome.mp3")
+myobj.save("hello.mp3")
 
-# Playing the converted file
-os.system("mpg321 welcome.mp3")

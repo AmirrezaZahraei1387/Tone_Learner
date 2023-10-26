@@ -2,7 +2,7 @@ import os
 
 from numpy import array as np_array
 from numpy import fromfile as np_fromfile
-from numpy import save as np_save
+
 
 File_Extension = ".tone"
 
@@ -26,6 +26,13 @@ class ToneOPoly:
     def polyfit(self):
         return self.__polyfit
 
+    @polyfit.setter
+    def polyfit(self, value: np_array = None):
+        if self.__polyfit is not None:
+            if len(self.__polyfit.shape) != 1:
+                raise ValueError("Excepted None or a 3d numpy array")
+        self.__polyfit = value
+
     def save(self, file_name: str):
         file_name = normalize_path_exten(file_name)
 
@@ -40,4 +47,4 @@ class ToneOPoly:
             return
 
         with open(file_name, mode='rb') as file:
-            self.__polyfit = np_fromfile(file, dtype=self.__polyfit.dtype)
+            self.__polyfit = np_fromfile(file)

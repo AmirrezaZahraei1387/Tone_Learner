@@ -47,7 +47,7 @@ def tletprocess(base_file: str, original_file: str):
     if len(base_f_o.shape) != 1:
         base_f_o = PutIn1D(base_f_o)
 
-    return tone.ToneOPoly(polyfit(base_f_o, original_f_o, 3))
+    return tone.ToneOPoly(polyfit(original_f_o, base_f_o, 3))
 
 
 def tpredict_audio(from_file: str, to_file: str, tone_obj: tone.ToneOPoly, frame_rate: int = None):
@@ -64,6 +64,4 @@ def tpredict_audio(from_file: str, to_file: str, tone_obj: tone.ToneOPoly, frame
 
     io.write_audio(to_file, fr, new_audio)
 
-
-a = tletprocess("learn.wav", "base.wav")
 
