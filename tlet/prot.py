@@ -23,7 +23,7 @@ def PutIn1D(__array__: array):
     vector = np_empty(length)
 
     for index in range(length):
-        vector[index] = __array__[index][0]
+        vector[index] = sum(__array__[index])
 
     return vector
 
@@ -54,14 +54,19 @@ def tpredict_audio(from_file: str, to_file: str, tone_obj: tone.ToneOPoly, frame
 
     fr, audio = io.read_audio(from_file)
     p_module = poly1d(tone_obj.polyfit)
-    new_audio = np_empty(len(audio))
 
     if frame_rate is not None:
         fr = frame_rate
 
-    for index, element in ndenumerate(audio):
-        new_audio[index[0]] = p_module(element)
+    if len(audio.shape) == 1:
+        new_audio = np_empty(len(audio))
+        for indexi, element in ndenumerate(audio):
+            new_audio[indexi[0]] = p_module(element)
+    else:
+        new_audio = np_empty((len(audio), len(audio[0])))
+        for indexi, elements in ndenumerate(audio):
+            for indexj, el in ndenumerate(elements):
+                new_audio[indexi[0]][indexj[0]] = p_module(el)
 
     io.write_audio(to_file, fr, new_audio)
-
 
